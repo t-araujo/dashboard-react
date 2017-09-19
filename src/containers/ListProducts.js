@@ -28,12 +28,18 @@ const styles = {
       width: '10%'
     },
     name: {
-      width: '40%'
-    },
-    price: {
       width: '20%'
     },
-    category: {
+    brandName: {
+      width: '20%'
+    },
+    hardwareRevision: {
+      width: '20%'
+    },
+    description: {
+      width: '20%'
+    },
+    hardwareRevision: {
       width: '20%'
     },
     edit: {
@@ -44,15 +50,33 @@ const styles = {
 
 class ListProducts extends Component {
 
+  constructor(props) {
+    super (props);
+    
+    this.state = {
+      selected: [1],
+    };
+  }
+
+  isSelected(index) {
+    return this.state.selected.indexOf(index) !== -1;
+  };
+
+  handleRowSelection = (selectedRows) => {
+    this.setState({
+      selected: selectedRows,
+    });
+    console.log(this.state);
+  };
+
   componentDidMount() {
     this.props.fetchProducts();
   }
 
   render (){
     return (
-      <PageBase title="Table Page"
-                navigation="Application / Table Page">
-
+      <PageBase title="Products Page"
+                navigation="Application / Products Page">
         <div>
           <Link to="/newProduct" >
             <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
@@ -60,25 +84,27 @@ class ListProducts extends Component {
             </FloatingActionButton>
           </Link>
 
-          <Table>
+          <Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.price}>Price</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.category}>Category</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.brandName}>Brand Name</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.hardwareRevision}>Hardware Revision</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.description}>Description</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.edit}>Edit</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
               {map(this.props.products ,item =>
-                <TableRow key={item.id}>
+                <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.name}>{item.brandName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.price}>{item.description}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.category}>{item.developmentName}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.name}>{item.developmentName}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.brandName}>{item.brandName}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.hardwareRevision}>{item.hardwareRevision}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to="/form">
+                    <Link className="button" to={`/editProduct/${item.id}`}>
                       <FloatingActionButton zDepth={0}
                                             mini={true}
                                             backgroundColor={grey200}
