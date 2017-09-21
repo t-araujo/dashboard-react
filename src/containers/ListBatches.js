@@ -9,7 +9,7 @@ import PageBase from '../components/PageBase';
 
 import { map } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../actions';
+import { fetchBatches } from '../actions';
 
 const styles = {
   floatingActionButton: {
@@ -27,19 +27,16 @@ const styles = {
     id: {
       width: '10%'
     },
-    name: {
+    created: {
       width: '20%'
     },
-    brandName: {
+    status: {
       width: '20%'
     },
-    hardwareRevision: {
+    serialPart: {
       width: '20%'
     },
     description: {
-      width: '20%'
-    },
-    hardwareRevision: {
       width: '20%'
     },
     edit: {
@@ -48,13 +45,13 @@ const styles = {
   }
 };
 
-class ListProducts extends Component {
+class ListBatches extends Component {
 
   constructor(props) {
     super (props);
     
     this.state = {
-      selected: [1]
+      selected: [1],
     };
   }
 
@@ -69,23 +66,16 @@ class ListProducts extends Component {
     console.log(this.state);
   }
 
-  componentWillMount(){
-    this.props.fetchProducts();
+  componentDidMount() {
+    this.props.fetchBatches();
   }
-
-  // componentDidMount() {
-  //   setInterval(() => this.props.fetchProducts(), 1000);
-  // }
-  // componentWillUnmount() {
-  //   clearInterval(setInterval());
-  // }
 
   render (){
     return (
-      <PageBase title="Products Page"
-                navigation="Application / Products Page">
+      <PageBase title="Batches Page"
+                navigation="Application / Batches Page">
         <div>
-          <Link to="/newProduct" >
+          <Link to="/newBatch" >
             <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
               <ContentAdd />
             </FloatingActionButton>
@@ -95,23 +85,23 @@ class ListProducts extends Component {
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.brandName}>Brand Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.hardwareRevision}>Hardware Revision</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.serialPart}>Serial Part</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.status}>Status</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.description}>Description</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.created}>Created</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.edit}>Edit</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.products ,item =>
+              {map(this.props.batches ,item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.name}>{item.developmentName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.brandName}>{item.brandName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.hardwareRevision}>{item.hardwareRevision}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.serialPart}>{item.serialPart}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.status}>{item.status}</TableRowColumn>
                   <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.created}>{item.createdAt}</TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to={`/editProduct/${item.id}`}>
+                    <Link className="button" to={`/editBatch/${item.id}`}>
                       <FloatingActionButton zDepth={0}
                                             mini={true}
                                             backgroundColor={grey200}
@@ -130,8 +120,8 @@ class ListProducts extends Component {
   }
 }
 
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps({ batches }) {
+  return { batches };
 }
 
-export default connect(mapStateToProps, { fetchProducts })(ListProducts);
+export default connect(mapStateToProps, { fetchBatches })(ListBatches);

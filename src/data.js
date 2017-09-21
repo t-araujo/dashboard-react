@@ -12,6 +12,7 @@ const data = {
   menus: [
     { text: 'DashBoard', icon: <Assessment/>, link: '/dashboard' },
     { text: 'Products', icon: <GridOn/>, link: '/products' },
+    { text: 'Batches', icon: <GridOn/>, link: '/batches' },
     { text: 'Login Page', icon: <PermIdentity/>, link: '/login' }
   ],
   tablePage: {

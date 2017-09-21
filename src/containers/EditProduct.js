@@ -168,13 +168,13 @@ class EditProduct extends Component {
           />
 
           <div style={styles.buttons}>
-            <Link to="/">
+            <Link to="/products">
               <RaisedButton label="Back"/>
             </Link>
 
             <RaisedButton label="Save"
                           style={styles.saveButton}
-                          type='submit'
+                          type="submit"
                           primary={true}/>
           </div>
         </ValidatorForm>

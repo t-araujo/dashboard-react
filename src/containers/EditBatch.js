@@ -4,18 +4,30 @@ import RaisedButton from 'material-ui/RaisedButton';
 // import MenuItem from 'material-ui/MenuItem';
 // import TextValidator from 'material-ui/TextValidator';
 // import SelectField from 'material-ui/SelectField';
-import Toggle from 'material-ui/Toggle';
+// import Toggle from 'material-ui/Toggle';
 // import DatePicker from 'material-ui/DatePicker';
 import {grey400} from 'material-ui/styles/colors';
-import Divider from 'material-ui/Divider';
+// import Divider from 'material-ui/Divider';
 import PageBase from '../components/PageBase';
 
+import {pink500, grey200, grey500} from 'material-ui/styles/colors';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Clear from 'material-ui/svg-icons/content/clear';
 import { connect } from 'react-redux';
-import { createProduct } from '../actions/index';
+import { fetchBatch, editBatch } from '../actions/index';
 import { reduxForm } from 'redux-form';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
+
 const styles = {
+  floatingActionButton: {
+    margin: 0,
+    top: 'auto',
+    right: 30,
+    top: 130,
+    left: 'auto',
+    position: 'fixed',
+  },
   toggleDiv: {
     maxWidth: 300,
     marginTop: 40,
@@ -35,13 +47,8 @@ const styles = {
 };
 
 const initialState = {
-  error: null, // you could put error messages here if you wanted
-  product: {
-      devName: "",
-      brandName: "",
-      serialPart: "",
-      description: "",
-      hardwareRevision: ""
+  batch: {
+
   },
   validation: {
     devName: "This field cannot be empty",
@@ -52,34 +59,61 @@ const initialState = {
   }
 };
 
-class NewProduct extends Component {
+class EditBatch extends Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
+    this.state = this.props.batch;
     // make sure the "this" variable keeps its scope
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-}
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+    const { id } = this.props.params;
+    this.props.fetchProduct(id);
+  }
 
   handleChange(event, newValue) {
     event.persist();          
-    this.setState((state) => state.product[event.target.name] = newValue);
+    this.setState((state) => state.batch[event.target.name] = newValue);
+  }
+  
+  handleDelete(event) {
+    this.props.deleteBatch(event.target.XXX, () => {
+      this.props.router.goBack();
+    })
   }
 
   onSubmit() {
-    this.props.createProduct(this.state.product, () => {
-      this.props.router.goBack();
+    this.props.editProduct(this.state.product, () => {
+      // this.props.router.goBack();
+      this.props.history.push('/products');
     });
   }
 
   render (){
-    // const { handleSubmit } = this.props;
+    let { batch } = this.props;
+    
+    if (!batch) {
+      batch = initialState.batch;
+    }
+
     return (
-      <PageBase title="New Product"
-                navigation="Application / New Product">
+      <PageBase title="Edit Batch"
+                navigation="Application / Edit Batch">
+
+          <Link onClick={this.handleDelete} >
+            <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
+              <Clear />
+            </FloatingActionButton>
+          </Link>
+
           <ValidatorForm
             ref="form"
             onSubmit={this.onSubmit}
+            instantValidate={true}
             onError={
               errors => {
                 console.log(errors)
@@ -87,67 +121,41 @@ class NewProduct extends Component {
           >
 
           <TextValidator
-            floatingLabelText="Brand Name"
-            name="brandName"
-            value={this.state.product.brandName}
+            floatingLabelText="Status"
+            name="status"
+            value={batch.status}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Brand Name field is required']}
-            fullWidth={false}
-          />
-          <TextValidator
-            floatingLabelText="Development Name"
-            name="devName"
-            value={this.state.product.devName}
-            onChange={this.handleChange}
-            validators={['required']}
-            errorMessages={['Development Name field is required']}
-            fullWidth={false}
-          />
-          <TextValidator
-            floatingLabelText="Hardware Revision"
-            name="hardwareRevision"
-            value={this.state.product.hardwareRevision}
-            onChange={this.handleChange}
-            validators={['required']}
-            errorMessages={['Hardware Revision field is required']}
+            errorMessages={['Status is required']}
             fullWidth={false}
           />
           <TextValidator
             floatingLabelText="Description"
             name="description"
-            value={this.state.product.description}
+            value={batch.description}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Description field is required']}
+            errorMessages={['Description is required']}
             fullWidth={true}
           />
           <TextValidator
             floatingLabelText="Serial Part"
             name="serialPart"
-            value={this.state.product.serialPart}
+            value={batch.serialPart}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Serial Part field is required']}
+            errorMessages={['Serial Part is required']}
             fullWidth={false}
           />
-          <div style={styles.toggleDiv}>
-            <Toggle
-              label="Disabled"
-              labelStyle={styles.toggleLabel}
-            />
-          </div>
-
-          <Divider/>
 
           <div style={styles.buttons}>
-            <Link to="products">
+            <Link to="/batches">
               <RaisedButton label="Back"/>
             </Link>
 
             <RaisedButton label="Save"
                           style={styles.saveButton}
-                          type='submit'
+                          type="submit"
                           primary={true}/>
           </div>
         </ValidatorForm>
@@ -156,8 +164,12 @@ class NewProduct extends Component {
   }
 }
 
+function mapStateToProps({ batches }, ownProps) {
+  return { batch: batches[ownProps.params.id] };
+}
+
 export default reduxForm({
-  form: 'NewProduct'
+  form: 'EditBatch'
 })(
-  connect(null, { createProduct })(NewProduct)
+  connect(mapStateToProps, { editBatch, fetchBatch })(EditBatch)
 );

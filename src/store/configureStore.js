@@ -7,10 +7,10 @@ import ReduxThunk from 'redux-thunk';
 const middlewares = [
   promise,
   ReduxThunk,
-].filter(Boolean);
+];
 
 const createStoreWithMiddleware = applyMiddleware(
-  ...middlewares,
+  ...middlewares
 )(createStore);
 
 export default function configureStore(initialState) {

@@ -4,13 +4,11 @@ import { mapKeys } from 'lodash';
 
 // put the default state as an object
 export default function(state = {}, action) {
-  console.log(action)
  switch (action.type) {
     case FETCH_PRODUCTS:
       return mapKeys(action.payload.data, 'id');
     case CREATE_PRODUCT:
     // key interpolation
-    console.log(action.payload)
     
     // resolver stress aqui
 

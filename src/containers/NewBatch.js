@@ -11,7 +11,7 @@ import Divider from 'material-ui/Divider';
 import PageBase from '../components/PageBase';
 
 import { connect } from 'react-redux';
-import { createProduct } from '../actions/index';
+import { createBatch } from '../actions/index';
 import { reduxForm } from 'redux-form';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
@@ -36,23 +36,15 @@ const styles = {
 
 const initialState = {
   error: null, // you could put error messages here if you wanted
-  product: {
-      devName: "",
-      brandName: "",
+  batch: {
       serialPart: "",
       description: "",
-      hardwareRevision: ""
-  },
-  validation: {
-    devName: "This field cannot be empty",
-    brandName: "This field cannot be empty",
-    serialPart: "This field cannot be empty",
-    description: "This field cannot be empty",
-    hardwareRevision: "This field cannot be empty"
+      productSerialPart: "",
+      status: ""
   }
 };
 
-class NewProduct extends Component {
+class NewBatch extends Component {
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -63,11 +55,11 @@ class NewProduct extends Component {
 
   handleChange(event, newValue) {
     event.persist();          
-    this.setState((state) => state.product[event.target.name] = newValue);
+    this.setState((state) => state.batch[event.target.name] = newValue);
   }
 
   onSubmit() {
-    this.props.createProduct(this.state.product, () => {
+    this.props.createBatch(this.state.batch, () => {
       this.props.router.goBack();
     });
   }
@@ -75,8 +67,8 @@ class NewProduct extends Component {
   render (){
     // const { handleSubmit } = this.props;
     return (
-      <PageBase title="New Product"
-                navigation="Application / New Product">
+      <PageBase title="New Batch"
+                navigation="Application / New Batch">
           <ValidatorForm
             ref="form"
             onSubmit={this.onSubmit}
@@ -87,48 +79,39 @@ class NewProduct extends Component {
           >
 
           <TextValidator
-            floatingLabelText="Brand Name"
-            name="brandName"
-            value={this.state.product.brandName}
+            floatingLabelText="Status"
+            name="status"
+            value={this.state.batch.status}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Brand Name field is required']}
+            errorMessages={['Status field is required']}
             fullWidth={false}
           />
           <TextValidator
-            floatingLabelText="Development Name"
-            name="devName"
-            value={this.state.product.devName}
+            floatingLabelText="Product Serial Part"
+            name="productSerialPart"
+            value={this.state.batch.productSerialPart}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Development Name field is required']}
-            fullWidth={false}
-          />
-          <TextValidator
-            floatingLabelText="Hardware Revision"
-            name="hardwareRevision"
-            value={this.state.product.hardwareRevision}
-            onChange={this.handleChange}
-            validators={['required']}
-            errorMessages={['Hardware Revision field is required']}
+            errorMessages={['Product Serial Part field is required']}
             fullWidth={false}
           />
           <TextValidator
             floatingLabelText="Description"
             name="description"
-            value={this.state.product.description}
+            value={this.state.batch.description}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Description field is required']}
             fullWidth={true}
           />
           <TextValidator
-            floatingLabelText="Serial Part"
+            floatingLabelText="Batch Serial Part"
             name="serialPart"
-            value={this.state.product.serialPart}
+            value={this.state.batch.serialPart}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Serial Part field is required']}
+            errorMessages={['Batch Serial Part field is required']}
             fullWidth={false}
           />
           <div style={styles.toggleDiv}>
@@ -141,7 +124,7 @@ class NewProduct extends Component {
           <Divider/>
 
           <div style={styles.buttons}>
-            <Link to="products">
+            <Link to="batches">
               <RaisedButton label="Back"/>
             </Link>
 
@@ -157,7 +140,7 @@ class NewProduct extends Component {
 }
 
 export default reduxForm({
-  form: 'NewProduct'
+  form: 'NewBatch'
 })(
-  connect(null, { createProduct })(NewProduct)
+  connect(null, { createBatch })(NewBatch)
 );
