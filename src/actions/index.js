@@ -8,6 +8,10 @@ export const FETCH_BATCHES = 'fetch_batches';
 export const FETCH_BATCH = 'fetch_batche';
 export const CREATE_BATCH = 'create_batch';
 export const EDIT_BATCH = 'edit_batch';
+export const FETCH_FIRMWARES = 'fetch_firmwares';
+export const FETCH_FIRMWARE = 'fetch_firmware';
+export const CREATE_FIRMWARE = 'create_firmware';
+export const EDIT_FIRMWARE = 'edit_firmware';
 
 const ROOT_URL = `http://localhost:4000`;
 
@@ -18,7 +22,7 @@ const ROOT_URL = `http://localhost:4000`;
  */
 
 export function fetchProducts() {
-  const request = axios.get(`${ROOT_URL}/products`);
+  const request = axios.get(`${ROOT_URL}/hardwares`);
 
   return {
     type: FETCH_PRODUCTS,
@@ -27,18 +31,18 @@ export function fetchProducts() {
 }
 
 export function createProduct(values, callback) {
-  const request = axios.post(`${ROOT_URL}/products`, values)
+  const request = axios.post(`${ROOT_URL}/hardwares`, values)
     .then(() => callback());
 
   return dispatch => {
     request.then(data => {
-      dispatch({ type: CREATE_PRODUCT, payload: request });
+      dispatch({ type: CREATE_PRODUCT, payload: data });
     });
   }
 }
 
 export function editProduct(values, callback) {
-  const request = axios.patch(`${ROOT_URL}/products/${values.id}`, values)
+  const request = axios.patch(`${ROOT_URL}/hardwares/${values.id}`, values)
     .then(() => callback());
 
   return {
@@ -48,7 +52,7 @@ export function editProduct(values, callback) {
 }
 
 export function fetchProduct(id) {
-  const request = axios.get(`${ROOT_URL}/products/${id}`);
+  const request = axios.get(`${ROOT_URL}/hardwares/${id}`);
 
   return {
     type: FETCH_PRODUCT,
@@ -80,7 +84,7 @@ export function fetchProduct(id) {
  */
 
 export function fetchBatches() {
-  const request = axios.get(`${ROOT_URL}/batchs`);
+  const request = axios.get(`${ROOT_URL}/batches`);
 
   return {
     type: FETCH_BATCHES,
@@ -89,18 +93,18 @@ export function fetchBatches() {
 }
 
 export function createBatch(values, callback) {
-  const request = axios.post(`${ROOT_URL}/batchs`, values)
+  const request = axios.post(`${ROOT_URL}/batches`, values)
     .then(() => callback());
 
   return dispatch => {
     request.then(data => {
-      dispatch({ type: CREATE_BATCH, payload: request });
+      dispatch({ type: CREATE_BATCH, payload: data });
     });
   }
 }
 
 export function editBatch(values, callback) {
-  const request = axios.patch(`${ROOT_URL}/batchs/${values.id}`, values)
+  const request = axios.patch(`${ROOT_URL}/batches/${values.id}`, values)
     .then(() => callback());
 
   return {
@@ -110,10 +114,25 @@ export function editBatch(values, callback) {
 }
 
 export function fetchBatch(id) {
-  const request = axios.get(`${ROOT_URL}/batchs/${id}`);
+  const request = axios.get(`${ROOT_URL}/batches/${id}`);
 
   return {
     type: FETCH_BATCH,
+    payload: request
+  };
+}
+
+/**
+ * 
+ * Firmwares
+ * 
+ */
+
+export function fetchFirmwares(id) {
+  const request = axios.get(`${ROOT_URL}/firmwares`);
+
+  return {
+    type: FETCH_FIRMWARES,
     payload: request
   };
 }

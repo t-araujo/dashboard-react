@@ -8,11 +8,8 @@ export default function(state = {}, action) {
     case FETCH_PRODUCTS:
       return mapKeys(action.payload.data, 'id');
     case CREATE_PRODUCT:
-    // key interpolation
-    
-    // resolver stress aqui
-
-      return { ...state, [action.payload.data.id]: action.payload.data };
+      // key interpolation
+      return { ...state };
     case EDIT_PRODUCT:
     // key interpolation
       return { ...state, [action.payload.data.id]: action.payload.data };

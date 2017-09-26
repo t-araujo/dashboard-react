@@ -1,14 +1,9 @@
-/* eslint-disable import/default */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
-
 import { Provider } from 'react-redux';
-import { applyMiddleware } from 'redux';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import store from './store/';
-import reducers from './reducers';
 import routes from './routes';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 require('./favicon.ico');

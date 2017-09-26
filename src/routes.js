@@ -5,6 +5,7 @@ import NotFoundPage from './containers/NotFoundPage.js';
 import LoginPage from './containers/LoginPage';
 import ListProducts from './containers/ListProducts';
 import ListBatches from './containers/ListBatches';
+import ListFirmwares from './containers/ListFirmwares';
 import NewProduct from './containers/NewProduct';
 import NewBatch from './containers/NewBatch';
 import EditProduct from './containers/EditProduct';
@@ -17,12 +18,15 @@ export default (
     <Route path="/" component={App}>
       <IndexRoute component={Dashboard}/>
       <Route path="dashboard" component={Dashboard}/>
-      <Route path="products" component={ListProducts}/>
+      <Route path="hardwares" component={ListProducts}/>
       <Route path="newProduct" component={NewProduct}/>
       <Route path="editProduct/:id" component={EditProduct}/>
       <Route path="batches" component={ListBatches}/>
       <Route path="newBatch" component={NewBatch}/>
       <Route path="editBatch/:id" component={EditBatch}/>
+      <Route path="firmwares" component={ListFirmwares}/>
+      {/* <Route path="newFirmware" component={NewFirmware}/>
+      <Route path="editFirmware/:id" component={EditFirmware}/> */}
       <Route path="*" component={NotFoundPage}/>
     </Route>
   </Route>

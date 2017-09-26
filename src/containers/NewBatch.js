@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {Link} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 // import MenuItem from 'material-ui/MenuItem';
@@ -34,38 +34,38 @@ const styles = {
   }
 };
 
-const initialState = {
-  error: null, // you could put error messages here if you wanted
-  batch: {
-      serialPart: "",
-      description: "",
-      productSerialPart: "",
-      status: ""
-  }
-};
-
 class NewBatch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = initialState;
-    // make sure the "this" variable keeps its scope
-    this.handleChange = this.handleChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-}
+  state = {
+    error: null,
+    batch: {
+        serialPart: "",
+        description: "",
+        productSerialPart: "",
+        status: ""
+    }
+  };
 
-  handleChange(event, newValue) {
+  // this happen because we add babel plugin transform-class-properties
+  // constructor(props) {
+  //   super(props);
+  //   this.state = initialState;
+    // make sure the "this" variable keeps its scope
+    // this.handleChange = this.handleChange.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
+// }
+
+  handleChange = (event, newValue) => {
     event.persist();          
     this.setState((state) => state.batch[event.target.name] = newValue);
   }
 
-  onSubmit() {
+  onSubmit = () => {
     this.props.createBatch(this.state.batch, () => {
       this.props.router.goBack();
     });
   }
 
   render (){
-    // const { handleSubmit } = this.props;
     return (
       <PageBase title="New Batch"
                 navigation="Application / New Batch">
@@ -74,7 +74,7 @@ class NewBatch extends Component {
             onSubmit={this.onSubmit}
             onError={
               errors => {
-                console.log(errors)
+                console.log(errors);
             }}
           >
 
@@ -130,7 +130,7 @@ class NewBatch extends Component {
 
             <RaisedButton label="Save"
                           style={styles.saveButton}
-                          type='submit'
+                          type="submit"
                           primary={true}/>
           </div>
         </ValidatorForm>
@@ -138,6 +138,11 @@ class NewBatch extends Component {
     );
   }
 }
+
+NewBatch.propTypes = {
+  createBatch: PropTypes.func,
+  router: PropTypes.func
+};
 
 export default reduxForm({
   form: 'NewBatch'

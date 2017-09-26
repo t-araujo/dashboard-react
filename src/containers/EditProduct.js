@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
-// import TextValidator from 'material-ui/TextValidator';
-import SelectField from 'material-ui/SelectField';
-import Toggle from 'material-ui/Toggle';
-import DatePicker from 'material-ui/DatePicker';
-import {grey400} from 'material-ui/styles/colors';
-import Divider from 'material-ui/Divider';
+import {grey400, pink500} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-
-import {pink500, grey200, grey500} from 'material-ui/styles/colors';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 import { connect } from 'react-redux';
@@ -22,7 +14,6 @@ import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 const styles = {
   floatingActionButton: {
     margin: 0,
-    top: 'auto',
     right: 30,
     top: 130,
     left: 'auto',
@@ -73,7 +64,6 @@ class EditProduct extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { id } = this.props.params;
     this.props.fetchProduct(id);
   }
@@ -92,7 +82,7 @@ class EditProduct extends Component {
   }
 
   render (){
-    const { handleSubmit } = this.props;
+    // const { handleSubmit } = this.props;
     let { product } = this.props;
     
     if (!product) {

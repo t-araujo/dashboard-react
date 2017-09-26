@@ -37,27 +37,22 @@ const styles = {
   }
 };
 
-const initialState = {
-  batch: {
-    description: '',
-    serialPart: '',
-    status: ''
-  },
-  validation: {
-    description: "This field cannot be empty",
-    serialPart: "This field cannot be empty",
-    status: "This field cannot be empty"
-  }
-};
-
 class EditBatch extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.props.batch;
-    // make sure the "this" variable keeps its scope
-    this.handleChange = this.handleChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
+  state = {
+      firmware: {
+      file: '',
+      settings: '',
+      type: '',
+      versions: '',
+      releaseNotes: ''
+    },
+    validation: {
+      file: 'This field cannot be empty',
+      settings: 'This field cannot be empty',
+      type: 'This field cannot be empty',
+      versions: 'This field cannot be empty',
+      releaseNotes: 'This field cannot be empty'
+    }
   }
 
   componentDidMount() {
@@ -67,7 +62,7 @@ class EditBatch extends Component {
 
   handleChange(event, newValue) {
     event.persist();          
-    this.setState((state) => state.batch[event.target.name] = newValue);
+    this.setState((state) => state.firmware[event.target.name] = newValue);
   }
   
   handleDelete(event) {
@@ -77,28 +72,24 @@ class EditBatch extends Component {
   }
 
   onSubmit() {
-    this.props.editBatch(this.state.batch, () => {
+    this.props.editFirmware(this.state.product, () => {
       // this.props.router.goBack();
-      this.props.history.push('/batches');
+      this.props.history.push('/products');
     });
   }
 
   render (){
-    let { batch } = this.props;
-    
-    if (!batch) {
-      batch = initialState.batch;
-    }
+    let { firmware } = this.props;
 
     return (
-      <PageBase title="Edit Batch"
-                navigation="Application / Edit Batch">
+      <PageBase title="Edit Firmware"
+                navigation="Application / Edit Firmware">
 
-          <Link onClick={this.handleDelete} >
+          {/* <Link onClick={this.handleDelete} >
             <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
               <Clear />
             </FloatingActionButton>
-          </Link>
+          </Link> */}
 
           <ValidatorForm
             ref="form"
@@ -111,30 +102,31 @@ class EditBatch extends Component {
           >
 
           <TextValidator
-            floatingLabelText="Status"
-            name="status"
-            value={batch.status}
+            floatingLabelText="File"
+            name="file"
+            value={firmware.file}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Status is required']}
             fullWidth={false}
+            //set to blocked
           />
           <TextValidator
-            floatingLabelText="Description"
-            name="description"
-            value={batch.description}
+            floatingLabelText="Settings"
+            name="settings"
+            value={firmware.settings}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Description is required']}
+            errorMessages={['Settings is required']}
             fullWidth={true}
           />
           <TextValidator
-            floatingLabelText="Serial Part"
-            name="serialPart"
-            value={batch.serialPart}
+            floatingLabelText="Versions"
+            name="versions"
+            value={firmware.versions}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Serial Part is required']}
+            errorMessages={['Version is required']}
             fullWidth={false}
           />
 

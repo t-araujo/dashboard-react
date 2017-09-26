@@ -9,7 +9,7 @@ import PageBase from '../components/PageBase';
 
 import { map } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../actions';
+import { fetchFirmwares } from '../actions';
 
 const styles = {
   floatingActionButton: {
@@ -27,16 +27,22 @@ const styles = {
     id: {
       width: '10%'
     },
-    name: {
+    created: {
       width: '20%'
     },
-    brandName: {
+    file: {
       width: '20%'
     },
-    revision: {
+    settings: {
       width: '20%'
     },
-    description: {
+    versions: {
+      width: '20%'
+    },
+    type: {
+      width: '20%'
+    },
+    releaseNotes: {
       width: '20%'
     },
     edit: {
@@ -45,15 +51,11 @@ const styles = {
   }
 };
 
-class ListProducts extends Component {
+class ListFirmwares extends Component {
+  state = {
+    selected: [1],
+  };
 
-  constructor(props) {
-    super (props);
-    
-    this.state = {
-      selected: [1]
-    };
-  }
 
   isSelected(index) {
     return this.state.selected.indexOf(index) !== -1;
@@ -66,23 +68,16 @@ class ListProducts extends Component {
     console.log(this.state);
   }
 
-  componentWillMount(){
-    this.props.fetchProducts();
+  componentDidMount() {
+    this.props.fetchFirmwares();
   }
-
-  // componentDidMount() {
-  //   setInterval(() => this.props.fetchProducts(), 1000);
-  // }
-  // componentWillUnmount() {
-  //   clearInterval(setInterval());
-  // }
 
   render (){
     return (
-      <PageBase title="Products Page"
-                navigation="Application / Products Page">
+      <PageBase title="Firmwares Page"
+                navigation="Application / Firmwares Page">
         <div>
-          <Link to="/newProduct" >
+          <Link to="/newFirmware" >
             <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
               <ContentAdd />
             </FloatingActionButton>
@@ -92,23 +87,27 @@ class ListProducts extends Component {
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.brandName}>Brand Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.revision}>revision</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.description}>Description</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.file}>File Name</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.settings}>Settings</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.versions}>Versions</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.type}>Type</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.releaseNotes}>Type</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.created}>Created</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.edit}>Edit</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.products ,item =>
+              {map(this.props.firmwares ,item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.name}>{item.developmentName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.brandName}>{item.brandName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.revision}>{item.revision}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.file}>{item.file}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.settings}>{item.settings}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.versions}>{item.versions}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.type}>{item.type}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.releaseNotes}>{item.releaseNotes}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.created}>{item.createdAt}</TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to={`/editProduct/${item.id}`}>
+                    <Link className="button" to={`/editFirmware/${item.id}`}>
                       <FloatingActionButton zDepth={0}
                                             mini={true}
                                             backgroundColor={grey200}
@@ -127,8 +126,8 @@ class ListProducts extends Component {
   }
 }
 
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps({ firmwares }) {
+  return { firmwares };
 }
 
-export default connect(mapStateToProps, { fetchProducts })(ListProducts);
+export default connect(mapStateToProps, { fetchFirmwares })(ListFirmwares);

@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {Link} from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
-// import MenuItem from 'material-ui/MenuItem';
-// import TextValidator from 'material-ui/TextValidator';
-// import SelectField from 'material-ui/SelectField';
 import Toggle from 'material-ui/Toggle';
-// import DatePicker from 'material-ui/DatePicker';
 import {grey400} from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import PageBase from '../components/PageBase';
@@ -34,39 +30,31 @@ const styles = {
   }
 };
 
-const initialState = {
-  error: null, // you could put error messages here if you wanted
-  product: {
-      devName: "",
-      brandName: "",
-      serialPart: "",
-      description: "",
-      hardwareRevision: ""
-  },
-  validation: {
-    devName: "This field cannot be empty",
-    brandName: "This field cannot be empty",
-    serialPart: "This field cannot be empty",
-    description: "This field cannot be empty",
-    hardwareRevision: "This field cannot be empty"
-  }
-};
-
 class NewProduct extends Component {
-  constructor(props) {
-    super(props);
-    this.state = initialState;
-    // make sure the "this" variable keeps its scope
-    this.handleChange = this.handleChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-}
+  state = {
+    error: null, // you could put error messages here if you wanted
+    product: {
+        devName: "",
+        brandName: "",
+        serialPart: "",
+        description: "",
+        revision: ""
+    },
+    validation: {
+      devName: "This field cannot be empty",
+      brandName: "This field cannot be empty",
+      serialPart: "This field cannot be empty",
+      description: "This field cannot be empty",
+      revision: "This field cannot be empty"
+    }
+  };
 
-  handleChange(event, newValue) {
+  handleChange = (event, newValue) => {
     event.persist();          
     this.setState((state) => state.product[event.target.name] = newValue);
   }
 
-  onSubmit() {
+  onSubmit = () => {
     this.props.createProduct(this.state.product, () => {
       this.props.router.goBack();
     });
@@ -82,7 +70,7 @@ class NewProduct extends Component {
             onSubmit={this.onSubmit}
             onError={
               errors => {
-                console.log(errors)
+                console.log(errors);
             }}
           >
 
@@ -106,8 +94,8 @@ class NewProduct extends Component {
           />
           <TextValidator
             floatingLabelText="Hardware Revision"
-            name="hardwareRevision"
-            value={this.state.product.hardwareRevision}
+            name="revision"
+            value={this.state.product.revision}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Hardware Revision field is required']}
@@ -155,6 +143,11 @@ class NewProduct extends Component {
     );
   }
 }
+
+NewProduct.propTypes = {
+  createProduct: PropTypes.func,
+  router: PropTypes.object
+};
 
 export default reduxForm({
   form: 'NewProduct'
