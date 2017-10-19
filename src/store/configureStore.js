@@ -9,9 +9,7 @@ const middlewares = [
   ReduxThunk,
 ];
 
-const createStoreWithMiddleware = applyMiddleware(
-  ...middlewares
-)(createStore);
+const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
 export default function configureStore(initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState);

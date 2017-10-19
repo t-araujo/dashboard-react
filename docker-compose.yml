@@ -8,3 +8,4 @@ services:
     environment:
       # - app_env=production
       - app_env=development
+      

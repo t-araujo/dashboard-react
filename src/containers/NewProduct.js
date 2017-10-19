@@ -70,7 +70,6 @@ class NewProduct extends Component {
             onSubmit={this.onSubmit}
             onError={
               errors => {
-                console.log(errors);
             }}
           >
 

@@ -106,7 +106,6 @@ class EditBatch extends Component {
             instantValidate={true}
             onError={
               errors => {
-                console.log(errors)
             }}
           >
 

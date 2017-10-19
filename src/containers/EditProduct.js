@@ -105,7 +105,6 @@ class EditProduct extends Component {
             instantValidate={true}
             onError={
               errors => {
-                console.log(errors)
             }}
           >
 

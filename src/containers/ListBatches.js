@@ -55,19 +55,18 @@ class ListBatches extends Component {
     };
   }
 
-  isSelected(index) {
-    return this.state.selected.indexOf(index) !== -1;
-  }
-
   handleRowSelection(selectedRows) {
     this.setState({
       selected: selectedRows,
     });
-    console.log(this.state);
   }
 
   componentDidMount() {
     this.props.fetchBatches();
+  }
+
+  isSelected(index) {
+    return this.state.selected.indexOf(index) !== -1;
   }
 
   render (){

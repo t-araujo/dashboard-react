@@ -12,6 +12,9 @@ export const FETCH_FIRMWARES = 'fetch_firmwares';
 export const FETCH_FIRMWARE = 'fetch_firmware';
 export const CREATE_FIRMWARE = 'create_firmware';
 export const EDIT_FIRMWARE = 'edit_firmware';
+export const FETCH_ALL_SOFTWARE = 'fetch_all_software';
+export const FETCH_SOFTWARE = 'fetch_software';
+export const EDIT_SOFTWARE = 'edit_software';
 
 const ROOT_URL = `http://localhost:4000`;
 
@@ -133,6 +136,59 @@ export function fetchFirmwares(id) {
 
   return {
     type: FETCH_FIRMWARES,
+    payload: request
+  };
+}
+
+export function editFirmware(values, callback) {
+  const request = axios.patch(`${ROOT_URL}/firmwares/${values.id}`, values)
+    .then(() => callback());
+
+  return {
+    type: EDIT_BATCH,
+    payload: request
+  };
+}
+
+export function fetchFirmware(id) {
+  const request = axios.get(`${ROOT_URL}/firmwares/${id}`);
+
+  return {
+    type: FETCH_BATCH,
+    payload: request
+  };
+}
+
+/**
+ * 
+ * Software
+ * 
+ */
+
+export function fetchAllSoftware(id) {
+  const request = axios.get(`${ROOT_URL}/software`);
+
+  return {
+    type: FETCH_ALL_SOFTWARE,
+    payload: request
+  };
+}
+
+export function editSoftware(values, callback) {
+  const request = axios.patch(`${ROOT_URL}/software/${values.id}`, values)
+    .then(() => callback());
+
+  return {
+    type: EDIT_SOFTWARE,
+    payload: request
+  };
+}
+
+export function fetchSoftware(id) {
+  const request = axios.get(`${ROOT_URL}/software/${id}`);
+
+  return {
+    type: FETCH_SOFTWARE,
     payload: request
   };
 }

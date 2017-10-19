@@ -10,17 +10,9 @@ import PageBase from '../components/PageBase';
 
 import { map } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchFirmwares } from '../actions';
+import { fetchAllSoftware } from '../actions';
 
 const styles = {
-  floatingActionButton: {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 20,
-    left: 'auto',
-    position: 'fixed',
-  },
   editButton: {
     fill: grey500
   },
@@ -56,10 +48,10 @@ const styles = {
   }
 };
 
-class ListFirmwares extends Component {
+class ListSoftware extends Component {
   state = {
     selected: [1],
-    firmwares : {}
+    software : {}
   };
 
 
@@ -74,13 +66,13 @@ class ListFirmwares extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchFirmwares();
+    this.props.fetchAllSoftware();
   }
 
   render (){
     return (
-      <PageBase title="Firmwares Page"
-                navigation="Application / Firmwares Page">
+      <PageBase title="Software"
+                navigation="Application / Software">
         <div>
 
           <Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
@@ -88,9 +80,7 @@ class ListFirmwares extends Component {
               <TableRow>
                 <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.file}>File Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.settings}>Settings</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.version}>Version</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.type}>Type</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.releaseNotes}>Release notes</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.created}>Created</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.download}>Download</TableHeaderColumn>
@@ -98,17 +88,15 @@ class ListFirmwares extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.firmwares ,item =>
+              {map(this.props.software ,item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
                   <TableRowColumn style={styles.columns.file}>{item.file}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.settings}>{item.settings}</TableRowColumn>
                   <TableRowColumn style={styles.columns.version}>{item.version}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.type}>{item.type}</TableRowColumn>
                   <TableRowColumn style={styles.columns.releaseNotes}>{item.releaseNotes}</TableRowColumn>
                   <TableRowColumn style={styles.columns.created}>{item.createdAt}</TableRowColumn>
                   <TableRowColumn style={styles.columns.download}>
-                    <Link className="button" to={`/downloadFirmware/${item.id}`}>
+                    <Link className="button" to={`/downloadSoftware/${item.id}`}>
                         <FloatingActionButton zDepth={0}
                                               mini={true}
                                               backgroundColor={grey200}
@@ -118,13 +106,13 @@ class ListFirmwares extends Component {
                     </Link>
                   </TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to={`/editFirmware/${item.id}`}>
-                      <FloatingActionButton zDepth={0}
-                                            mini={true}
-                                            backgroundColor={grey200}
-                                            iconStyle={styles.editButton}>
-                        <ContentCreate  />
-                      </FloatingActionButton>
+                    <Link className="button" to={`/editSoftware/${item.id}`}>
+                        <FloatingActionButton zDepth={0}
+                                              mini={true}
+                                              backgroundColor={grey200}
+                                              iconStyle={styles.editButton}>
+                          <ContentCreate  />
+                        </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
                 </TableRow>
@@ -137,8 +125,8 @@ class ListFirmwares extends Component {
   }
 }
 
-function mapStateToProps({ firmwares }) {
-  return { firmwares };
+function mapStateToProps({ software }) {
+  return { software };
 }
 
-export default connect(mapStateToProps, { fetchFirmwares })(ListFirmwares);
+export default connect(mapStateToProps, { fetchAllSoftware })(ListSoftware);

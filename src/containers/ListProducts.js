@@ -55,19 +55,18 @@ class ListProducts extends Component {
     };
   }
 
-  isSelected(index) {
-    return this.state.selected.indexOf(index) !== -1;
+  componentWillMount(){
+    this.props.fetchProducts();
   }
 
   handleRowSelection(selectedRows) {
     this.setState({
       selected: selectedRows,
     });
-    console.log(this.state);
   }
 
-  componentWillMount(){
-    this.props.fetchProducts();
+  isSelected(index) {
+    return this.state.selected.indexOf(index) !== -1;
   }
 
   // componentDidMount() {

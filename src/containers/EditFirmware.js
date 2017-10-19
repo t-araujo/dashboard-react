@@ -47,10 +47,10 @@ class EditBatch extends Component {
       releaseNotes: ''
     },
     validation: {
-      file: 'This field cannot be empty',
-      settings: 'This field cannot be empty',
-      type: 'This field cannot be empty',
-      versions: 'This field cannot be empty',
+      file: 'This field cannot be changed',
+      settings: 'This field cannot be changed',
+      type: 'This field cannot be changed',
+      versions: 'This field cannot be changed',
       releaseNotes: 'This field cannot be empty'
     }
   }
@@ -65,16 +65,10 @@ class EditBatch extends Component {
     this.setState((state) => state.firmware[event.target.name] = newValue);
   }
   
-  handleDelete(event) {
-    this.props.deleteBatch(event.target.XXX, () => {
-      this.props.router.goBack();
-    })
-  }
-
   onSubmit() {
-    this.props.editFirmware(this.state.product, () => {
+    this.props.editFirmware(this.state.firmware, () => {
       // this.props.router.goBack();
-      this.props.history.push('/products');
+      this.props.history.push('/firmwares');
     });
   }
 
@@ -85,19 +79,12 @@ class EditBatch extends Component {
       <PageBase title="Edit Firmware"
                 navigation="Application / Edit Firmware">
 
-          {/* <Link onClick={this.handleDelete} >
-            <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
-              <Clear />
-            </FloatingActionButton>
-          </Link> */}
-
           <ValidatorForm
             ref="form"
             onSubmit={this.onSubmit}
             instantValidate={true}
             onError={
               errors => {
-                console.log(errors)
             }}
           >
 
@@ -107,7 +94,7 @@ class EditBatch extends Component {
             value={firmware.file}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Status is required']}
+            errorMessages={['File cannot be changed']}
             fullWidth={false}
             //set to blocked
           />
@@ -117,7 +104,7 @@ class EditBatch extends Component {
             value={firmware.settings}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Settings is required']}
+            errorMessages={['Settings cannot be changed']}
             fullWidth={true}
           />
           <TextValidator
@@ -126,7 +113,25 @@ class EditBatch extends Component {
             value={firmware.versions}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Version is required']}
+            errorMessages={['Version cannot be changed']}
+            fullWidth={false}
+          />
+          <TextValidator
+            floatingLabelText="Type"
+            name="type"
+            value={firmware.type}
+            onChange={this.handleChange}
+            validators={['required']}
+            errorMessages={['Type cannot be changed']}
+            fullWidth={false}
+          />
+          <TextValidator
+            floatingLabelText="Release Notes"
+            name="releaseNotes"
+            value={firmware.releaseNotes}
+            onChange={this.handleChange}
+            validators={['required']}
+            errorMessages={['Release notes is required']}
             fullWidth={false}
           />
 
