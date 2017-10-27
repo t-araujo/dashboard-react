@@ -9,7 +9,7 @@ import PageBase from '../components/PageBase';
 
 import { map } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../actions';
+import { fetchDevices } from '../actions';
 
 const styles = {
   floatingActionButton: {
@@ -27,16 +27,13 @@ const styles = {
     id: {
       width: '10%'
     },
-    name: {
+    serial: {
       width: '20%'
     },
-    brandName: {
+    state: {
       width: '20%'
     },
-    revision: {
-      width: '20%'
-    },
-    description: {
+    liveDate: {
       width: '20%'
     },
     edit: {
@@ -45,7 +42,7 @@ const styles = {
   }
 };
 
-class ListProducts extends Component {
+class ListDevices extends Component {
 
   constructor(props) {
     super (props);
@@ -56,7 +53,7 @@ class ListProducts extends Component {
   }
 
   componentWillMount(){
-    this.props.fetchProducts();
+    this.props.fetchDevices();
   }
 
   handleRowSelection(selectedRows) {
@@ -77,11 +74,12 @@ class ListProducts extends Component {
   // }
 
   render (){
+    const devices = this.props.devices;
     return (
-      <PageBase title="Hardware Page"
-                navigation="Application / Hardware Page">
+      <PageBase title="Devices Page"
+                navigation="Application / Devices Page">
         <div>
-          <Link to="/newProduct" >
+          <Link to="/newDevice" >
             <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
               <ContentAdd />
             </FloatingActionButton>
@@ -91,23 +89,21 @@ class ListProducts extends Component {
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.brandName}>Brand Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.revision}>revision</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.description}>Description</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.serial}>Serial</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.state}>State</TableHeaderColumn>
+                <TableHeaderColumn style={styles.columns.liveDate}>LiveDate</TableHeaderColumn>
                 <TableHeaderColumn style={styles.columns.edit}>Edit</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.products ,item =>
+              {map(devices ,item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.name}>{item.developmentName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.brandName}>{item.brandName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.revision}>{item.revision}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.serial}>{item.serial}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.state}>{item.state}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.liveDate}>{item.liveDate}</TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to={`/editProduct/${item.id}`}>
+                    <Link className="button" to={`/editDevice/${item.id}`}>
                       <FloatingActionButton zDepth={0}
                                             mini={true}
                                             backgroundColor={grey200}
@@ -126,8 +122,8 @@ class ListProducts extends Component {
   }
 }
 
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps({ devices }) {
+  return { devices };
 }
 
-export default connect(mapStateToProps, { fetchProducts })(ListProducts);
+export default connect(mapStateToProps, { fetchDevices })(ListDevices);
