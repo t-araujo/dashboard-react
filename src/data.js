@@ -12,6 +12,7 @@ const data = {
     { text: 'DashBoard', icon: <Assessment/>, link: '/dashboard' },
     { text: 'Hardwares', icon: <GridOn/>, link: '/hardwares' },
     { text: 'Batches', icon: <GridOn/>, link: '/batches' },
+    { text: 'Devices', icon: <GridOn/>, link: '/devices' },
     { text: 'Firmwares', icon: <GridOn/>, link: '/firmwares' },
     { text: 'Software', icon: <GridOn/>, link: '/Software' },
     { text: 'Login Page', icon: <PermIdentity/>, link: '/login' }

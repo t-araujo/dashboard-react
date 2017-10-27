@@ -7,6 +7,7 @@ import ListProducts from './containers/ListProducts';
 import ListBatches from './containers/ListBatches';
 import ListFirmwares from './containers/ListFirmwares';
 import ListSoftware from './containers/ListSoftware';
+import ListDevices from './containers/ListDevices';
 import NewProduct from './containers/NewProduct';
 import NewBatch from './containers/NewBatch';
 import EditProduct from './containers/EditProduct';
@@ -27,6 +28,7 @@ export default (
       <Route path="editBatch/:id" component={EditBatch}/>
       <Route path="firmwares" component={ListFirmwares}/>
       <Route path="software" component={ListSoftware}/>
+      <Route path="devices" component={ListDevices}/>
       <Route path="*" component={NotFoundPage}/>
     </Route>
   </Route>

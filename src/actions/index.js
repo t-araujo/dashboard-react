@@ -15,8 +15,12 @@ export const EDIT_FIRMWARE = 'edit_firmware';
 export const FETCH_ALL_SOFTWARE = 'fetch_all_software';
 export const FETCH_SOFTWARE = 'fetch_software';
 export const EDIT_SOFTWARE = 'edit_software';
+export const EDIT_DEVICE = 'edit_device';
+export const FETCH_DEVICE = 'fetch_device';
+export const FETCH_DEVICES = 'fetch_devices';
 
-const ROOT_URL = `http://localhost:4000`;
+// const ROOT_URL = `http://localhost:4000`;
+const ROOT_URL = `http://192.168.3.89:4000`;
 
 /**
  * 
@@ -189,6 +193,34 @@ export function fetchSoftware(id) {
 
   return {
     type: FETCH_SOFTWARE,
+    payload: request
+  };
+}
+
+export function fetchDevices(id) {
+  const request = axios.get(`${ROOT_URL}/devices`);
+
+  return {
+    type: FETCH_DEVICES,
+    payload: request
+  };
+}
+
+export function editDevice(values, callback) {
+  const request = axios.patch(`${ROOT_URL}/devices/${values.id}`, values)
+    .then(() => callback());
+
+  return {
+    type: EDIT_DEVICE,
+    payload: request
+  };
+}
+
+export function fetchDevice(id) {
+  const request = axios.get(`${ROOT_URL}/devices/${id}`);
+
+  return {
+    type: FETCH_DEVICE,
     payload: request
   };
 }
