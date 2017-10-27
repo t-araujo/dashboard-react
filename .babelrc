@@ -4,6 +4,9 @@
     "react",
     "stage-1"
   ],
+  "plugins": [
+      "transform-class-properties"
+  ],
   "env": {
     "development": {
       "presets": [
