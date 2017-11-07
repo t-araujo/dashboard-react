@@ -10,6 +10,9 @@ export default function(state = {}, action) {
     case CREATE_BATCH:
       return { ...state, [action.payload.data.id]: action.payload.data };
 
+    case FETCH_BATCH:
+      return { ...state, [action.payload.data.id]: action.payload.data };
+
     case EDIT_BATCH:
       return { ...state, [action.payload.data.id]: action.payload.data };
 

@@ -14,7 +14,7 @@ const data = {
     { text: 'Batches', icon: <GridOn/>, link: '/batches' },
     { text: 'Devices', icon: <GridOn/>, link: '/devices' },
     { text: 'Firmwares', icon: <GridOn/>, link: '/firmwares' },
-    { text: 'Software', icon: <GridOn/>, link: '/Software' },
+    { text: 'Software', icon: <GridOn/>, link: '/software' },
     { text: 'Login Page', icon: <PermIdentity/>, link: '/login' }
   ],
   tablePage: {

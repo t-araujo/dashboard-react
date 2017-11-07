@@ -6,7 +6,7 @@ import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-
+import moment from 'moment';
 import { map } from 'lodash';
 import { connect } from 'react-redux';
 import { fetchBatches } from '../actions';
@@ -48,16 +48,16 @@ const styles = {
 class ListBatches extends Component {
 
   constructor(props) {
-    super (props);
-    
+    super(props);
     this.state = {
-      selected: [1],
+      selected: [1]
     };
+    this.handleRowSelection = this.handleRowSelection.bind(this);
   }
 
   handleRowSelection(selectedRows) {
     this.setState({
-      selected: selectedRows,
+      selected: selectedRows
     });
   }
 
@@ -69,7 +69,7 @@ class ListBatches extends Component {
     return this.state.selected.indexOf(index) !== -1;
   }
 
-  render (){
+  render() {
     return (
       <PageBase title="Batches Page"
                 navigation="Application / Batches Page">
@@ -92,31 +92,32 @@ class ListBatches extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.batches ,item =>
+              {map(this.props.batches, item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
                   <TableRowColumn style={styles.columns.serialPart}>{item.serialPart}</TableRowColumn>
                   <TableRowColumn style={styles.columns.status}>{item.status}</TableRowColumn>
                   <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.created}>{item.createdAt}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.created}>{moment(item.createdAt).format('MMM Do YY')}</TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
                     <Link className="button" to={`/editBatch/${item.id}`}>
                       <FloatingActionButton zDepth={0}
                                             mini={true}
                                             backgroundColor={grey200}
                                             iconStyle={styles.editButton}>
-                        <ContentCreate  />
+                        <ContentCreate />
                       </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
                 </TableRow>
               )}
             </TableBody>
-          </Table>    
+          </Table>
         </div>
       </PageBase>
     );
   }
+
 }
 
 function mapStateToProps({ batches }) {

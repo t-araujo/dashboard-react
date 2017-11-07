@@ -6,20 +6,23 @@ export default function(state = {}, action) {
  switch (action.type) {
     case FETCH_FIRMWARES:
     if (action.payload.data){
-      const firmwares = action.payload.data.map(item => {
-        item.settings = `${item.settings.major}.${item.settings.minor}`;
-        return item;
-      });
-        return mapKeys(firmwares, 'id');
+      // const firmwares = action.payload.data.map(item => {
+      //   item.settings = `${item.settings.major}.${item.settings.minor}`;
+      //   return item;
+      // });
+        return mapKeys(action.payload.data, 'id');
     } else {
-      return { ...state }
+      return { ...state };
     }
 
     case CREATE_FIRMWARE:
       return { ...state, [action.payload.data.id]: action.payload.data };
 
-    case EDIT_FIRMWARE:
+    case FETCH_FIRMWARE:
       return { ...state, [action.payload.data.id]: action.payload.data };
+
+    case EDIT_FIRMWARE:
+      return { ...state }; //, [action.payload.data.id]: action.payload.data
 
     default:
       return state;

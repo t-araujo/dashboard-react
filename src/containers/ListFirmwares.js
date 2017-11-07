@@ -7,7 +7,7 @@ import FileFileDownload from 'material-ui/svg-icons/file/file-download';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-
+import moment from 'moment';
 import { map } from 'lodash';
 import { connect } from 'react-redux';
 import { fetchFirmwares } from '../actions';
@@ -19,7 +19,7 @@ const styles = {
     right: 20,
     bottom: 20,
     left: 'auto',
-    position: 'fixed',
+    position: 'fixed'
   },
   editButton: {
     fill: grey500
@@ -41,7 +41,6 @@ const styles = {
       width: '10%'
     },
     releaseNotes: {
-      
       width: '30%'
     },
     settings: {
@@ -56,12 +55,20 @@ const styles = {
   }
 };
 
-class ListFirmwares extends Component {
-  state = {
-    selected: [1],
-    firmwares : {}
-  };
+const initialState = {
+  selected: [1],
+  firmwares: {}
+};
 
+class ListFirmwares extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: [1]
+    };
+    this.handleRowSelection = this.handleRowSelection.bind(this);
+  }
 
   isSelected(index) {
     return this.state.selected.indexOf(index) !== -1;
@@ -69,7 +76,7 @@ class ListFirmwares extends Component {
 
   handleRowSelection(selectedRows) {
     this.setState({
-      selected: selectedRows,
+      selected: selectedRows
     });
   }
 
@@ -77,12 +84,11 @@ class ListFirmwares extends Component {
     this.props.fetchFirmwares();
   }
 
-  render (){
+  render() {
     return (
       <PageBase title="Firmwares Page"
                 navigation="Application / Firmwares Page">
         <div>
-
           <Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
             <TableHeader>
               <TableRow>
@@ -98,22 +104,22 @@ class ListFirmwares extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.firmwares ,item =>
+              {map(this.props.firmwares, item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
                   <TableRowColumn style={styles.columns.file}>{item.file}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.settings}>{item.settings}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.settings}>{`${item.settings.major}.${item.settings.minor}`}</TableRowColumn>
                   <TableRowColumn style={styles.columns.version}>{item.version}</TableRowColumn>
                   <TableRowColumn style={styles.columns.type}>{item.type}</TableRowColumn>
                   <TableRowColumn style={styles.columns.releaseNotes}>{item.releaseNotes}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.created}>{item.createdAt}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.created}>{moment(item.createdAt).format('MMM Do YY')}</TableRowColumn>
                   <TableRowColumn style={styles.columns.download}>
                     <Link className="button" to={`/downloadFirmware/${item.id}`}>
                         <FloatingActionButton zDepth={0}
                                               mini={true}
                                               backgroundColor={grey200}
                                               iconStyle={styles.editButton}>
-                          <FileFileDownload  />
+                          <FileFileDownload />
                         </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
@@ -123,18 +129,19 @@ class ListFirmwares extends Component {
                                             mini={true}
                                             backgroundColor={grey200}
                                             iconStyle={styles.editButton}>
-                        <ContentCreate  />
+                        <ContentCreate />
                       </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
                 </TableRow>
               )}
             </TableBody>
-          </Table>    
+          </Table>
         </div>
       </PageBase>
     );
   }
+
 }
 
 function mapStateToProps({ firmwares }) {
