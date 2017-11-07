@@ -7,7 +7,7 @@ import FileFileDownload from 'material-ui/svg-icons/file/file-download';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-
+import moment from 'moment';
 import { map } from 'lodash';
 import { connect } from 'react-redux';
 import { fetchAllSoftware } from '../actions';
@@ -33,7 +33,6 @@ const styles = {
       width: '10%'
     },
     releaseNotes: {
-      
       width: '30%'
     },
     settings: {
@@ -48,12 +47,21 @@ const styles = {
   }
 };
 
-class ListSoftware extends Component {
-  state = {
-    selected: [1],
-    software : {}
-  };
+const initialState = {
+  selected: [1],
+  softwares: {}
+};
 
+class ListSoftware extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = initialState;
+    this.state.softwares = this.props.softwares;
+
+    this.handleRowSelection = this.handleRowSelection.bind(this);
+    this.isSelected = this.isSelected.bind(this);
+  }
 
   isSelected(index) {
     return this.state.selected.indexOf(index) !== -1;
@@ -61,7 +69,7 @@ class ListSoftware extends Component {
 
   handleRowSelection(selectedRows) {
     this.setState({
-      selected: selectedRows,
+      selected: selectedRows
     });
   }
 
@@ -69,7 +77,7 @@ class ListSoftware extends Component {
     this.props.fetchAllSoftware();
   }
 
-  render (){
+  render() {
     return (
       <PageBase title="Software"
                 navigation="Application / Software">
@@ -88,20 +96,20 @@ class ListSoftware extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.software ,item =>
+              {map(this.props.softwares, item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
                   <TableRowColumn style={styles.columns.file}>{item.file}</TableRowColumn>
                   <TableRowColumn style={styles.columns.version}>{item.version}</TableRowColumn>
                   <TableRowColumn style={styles.columns.releaseNotes}>{item.releaseNotes}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.created}>{item.createdAt}</TableRowColumn>
+                  <TableRowColumn style={styles.columns.created}>{moment(item.createdAt).format('MMM Do YY')}</TableRowColumn>
                   <TableRowColumn style={styles.columns.download}>
                     <Link className="button" to={`/downloadSoftware/${item.id}`}>
                         <FloatingActionButton zDepth={0}
                                               mini={true}
                                               backgroundColor={grey200}
                                               iconStyle={styles.editButton}>
-                          <FileFileDownload  />
+                          <FileFileDownload />
                         </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
@@ -111,22 +119,23 @@ class ListSoftware extends Component {
                                               mini={true}
                                               backgroundColor={grey200}
                                               iconStyle={styles.editButton}>
-                          <ContentCreate  />
+                          <ContentCreate />
                         </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
                 </TableRow>
               )}
             </TableBody>
-          </Table>    
+          </Table>
         </div>
       </PageBase>
     );
   }
+
 }
 
-function mapStateToProps({ software }) {
-  return { software };
+function mapStateToProps({ softwares }) {
+  return { softwares };
 }
 
 export default connect(mapStateToProps, { fetchAllSoftware })(ListSoftware);

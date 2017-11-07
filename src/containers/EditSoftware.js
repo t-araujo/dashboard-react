@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
 import PageBase from '../components/PageBase';
 import { grey400 } from 'material-ui/styles/colors';
-import { editFirmware, fetchFirmware } from '../actions/index';
+import { editSoftware, fetchSoftware } from '../actions/index';
 import { reduxForm } from 'redux-form';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 
@@ -40,7 +40,7 @@ const styles = {
 };
 
 const InitialState = {
-  firmware: {
+  software: {
     file: '',
     releaseNotes: '',
     settings: '',
@@ -56,12 +56,12 @@ const InitialState = {
   }
 };
 
-class EditFirmware extends Component {
+class EditSoftware extends Component {
 
   constructor(props) {
     super(props);
     this.state = InitialState;
-    this.state.firmware = this.props.firmware;
+    this.state.software = this.props.software;
 
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -70,28 +70,28 @@ class EditFirmware extends Component {
   componentDidMount() {
     const { id } = this.props.params;
 
-    this.props.fetchFirmware(id);
+    this.props.fetchSoftware(id);
   }
 
   handleChange(event, newValue) {
     event.persist();
-    this.setState(state => state.firmware[event.target.name] = newValue);
+    this.setState(state => state.software[event.target.name] = newValue);
   }
 
   onSubmit() {
-    this.props.editFirmware(this.state.firmware, () => { this.props.router.goBack(); });
+    this.props.editSoftware(this.state.software, () => { this.props.router.goBack(); });
   }
 
   render() {
-    let { firmware } = this.state;
+    let { software } = this.state;
 
-    if (!firmware) {
-      firmware = InitialState.firmware;
+    if (!software) {
+      software = InitialState.software;
     }
 
     return (
-      <PageBase title="Edit Firmware"
-                navigation="Application / Edit Firmware">
+      <PageBase title="Edit Software"
+                navigation="Application / Edit Software">
 
           <ValidatorForm
             ref="form"
@@ -104,9 +104,9 @@ class EditFirmware extends Component {
           >
 
           <TextValidator
-            floatingLabelText="File"
+            floatingLabelText="File Name"
             name="file"
-            value={firmware.file}
+            value={software.file}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['File cannot be changed']}
@@ -115,18 +115,18 @@ class EditFirmware extends Component {
             inputStyle={styles.inputs.file}
           />
           <TextValidator
-            floatingLabelText="Settings"
-            name="settings"
-            value={`${firmware.settings.major}.${firmware.settings.minor}`}
+            floatingLabelText="Release Notes"
+            name="releaseNotes"
+            value={software.releaseNotes}
             onChange={this.handleChange}
             validators={['required']}
-            errorMessages={['Settings cannot be changed']}
+            errorMessages={['Release notes is required']}
             fullWidth={true}
           />
           <TextValidator
             floatingLabelText="Version"
             name="version"
-            value={firmware.version}
+            value={software.version}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Version cannot be changed']}
@@ -135,24 +135,15 @@ class EditFirmware extends Component {
           <TextValidator
             floatingLabelText="Type"
             name="type"
-            value={firmware.type}
+            value={software.architecture}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Type cannot be changed']}
             fullWidth={false}
           />
-          <TextValidator
-            floatingLabelText="Release Notes"
-            name="releaseNotes"
-            value={firmware.releaseNotes}
-            onChange={this.handleChange}
-            validators={['required']}
-            errorMessages={['Release notes is required']}
-            fullWidth={false}
-          />
 
           <div style={styles.buttons}>
-            <Link to="/batches">
+            <Link to="/software">
               <RaisedButton label="Back"/>
             </Link>
 
@@ -168,12 +159,12 @@ class EditFirmware extends Component {
 
 }
 
-function mapStateToProps({ firmwares }, ownProps) {
-  return { firmware: firmwares[ownProps.params.id] };
+function mapStateToProps({ softwares }, ownProps) {
+  return { software: softwares[ownProps.params.id] };
 }
 
 export default reduxForm({
-  form: 'EditFirmware'
+  form: 'EditSoftware'
 })(
-  connect(mapStateToProps, { editFirmware, fetchFirmware })(EditFirmware)
+  connect(mapStateToProps, { editSoftware, fetchSoftware })(EditSoftware)
 );

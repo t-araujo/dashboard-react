@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import { Link } from 'react-router';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import {pink500, grey200, grey500} from 'material-ui/styles/colors';
+import { grey200, grey500, pink500 } from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
-
-import { map } from 'lodash';
+import { map, slice } from 'lodash';
 import { connect } from 'react-redux';
 import { fetchDevices } from '../actions';
 
@@ -18,7 +17,7 @@ const styles = {
     right: 20,
     bottom: 20,
     left: 'auto',
-    position: 'fixed',
+    position: 'fixed'
   },
   editButton: {
     fill: grey500
@@ -45,20 +44,22 @@ const styles = {
 class ListDevices extends Component {
 
   constructor(props) {
-    super (props);
-    
+    super(props);
+
     this.state = {
       selected: [1]
     };
+
+    this.handleRowSelection = this.handleRowSelection.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.fetchDevices();
   }
 
   handleRowSelection(selectedRows) {
     this.setState({
-      selected: selectedRows,
+      selected: selectedRows
     });
   }
 
@@ -66,15 +67,10 @@ class ListDevices extends Component {
     return this.state.selected.indexOf(index) !== -1;
   }
 
-  // componentDidMount() {
-  //   setInterval(() => this.props.fetchProducts(), 1000);
-  // }
-  // componentWillUnmount() {
-  //   clearInterval(setInterval());
-  // }
+  render() {
+    const { devices } = this.props;
+    const temp = slice(devices, 0, 100);
 
-  render (){
-    const devices = this.props.devices;
     return (
       <PageBase title="Devices Page"
                 navigation="Application / Devices Page">
@@ -96,7 +92,7 @@ class ListDevices extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(devices ,item =>
+              {map(temp, item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
                   <TableRowColumn style={styles.columns.serial}>{item.serial}</TableRowColumn>
@@ -108,18 +104,19 @@ class ListDevices extends Component {
                                             mini={true}
                                             backgroundColor={grey200}
                                             iconStyle={styles.editButton}>
-                        <ContentCreate  />
+                        <ContentCreate />
                       </FloatingActionButton>
                     </Link>
                   </TableRowColumn>
                 </TableRow>
               )}
             </TableBody>
-          </Table>    
+          </Table>
         </div>
       </PageBase>
     );
   }
+
 }
 
 function mapStateToProps({ devices }) {

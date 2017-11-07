@@ -53,38 +53,31 @@ const initialState = {
 class EditBatch extends Component {
   constructor(props) {
     super(props);
-    this.state = this.props.batch;
+    this.state = initialState;
+    this.state.batch = this.props.batch;
     // make sure the "this" variable keeps its scope
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
     const { id } = this.props.params;
-    this.props.fetchProduct(id);
+    this.props.fetchBatch(id);
   }
 
   handleChange(event, newValue) {
-    event.persist();          
+    event.persist();
     this.setState((state) => state.batch[event.target.name] = newValue);
   }
   
-  handleDelete(event) {
-    this.props.deleteBatch(event.target.XXX, () => {
-      this.props.router.goBack();
-    })
-  }
-
   onSubmit() {
     this.props.editBatch(this.state.batch, () => {
-      // this.props.router.goBack();
-      this.props.history.push('/batches');
+      this.props.router.goBack();
     });
   }
 
   render (){
-    let { batch } = this.props;
+    let { batch } = this.state;
     
     if (!batch) {
       batch = initialState.batch;
@@ -94,18 +87,13 @@ class EditBatch extends Component {
       <PageBase title="Edit Batch"
                 navigation="Application / Edit Batch">
 
-          <Link onClick={this.handleDelete} >
-            <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
-              <Clear />
-            </FloatingActionButton>
-          </Link>
-
           <ValidatorForm
             ref="form"
             onSubmit={this.onSubmit}
             instantValidate={true}
             onError={
               errors => {
+                console.log(errors);
             }}
           >
 

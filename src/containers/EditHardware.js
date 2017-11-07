@@ -6,7 +6,7 @@ import PageBase from '../components/PageBase';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 import { connect } from 'react-redux';
-import { fetchProduct, editProduct } from '../actions/index';
+import { fetchHardware, editHardware } from '../actions/index';
 import { reduxForm } from 'redux-form';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
@@ -38,66 +38,61 @@ const styles = {
 };
 
 const initialState = {
-  product: {
+  thisHardware: {
       devName: "",
+      developmentName: "",
       brandName: "",
       serialPart: "",
       description: "",
-      hardwareRevision: ""
+      revision: ""
   },
   validation: {
     devName: "This field cannot be empty",
     brandName: "This field cannot be empty",
     serialPart: "This field cannot be empty",
     description: "This field cannot be empty",
-    hardwareRevision: "This field cannot be empty"
+    revision: "This field cannot be empty"
   }
 };
 
-class EditProduct extends Component {
+class EditHardware extends Component {
   constructor(props) {
-    super(props);
+    super (props);
     this.state = initialState;
-    // make sure the "this" variable keeps its scope
+    this.state.thisHardware = this.props.thisHardware;
+
     this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   componentDidMount() {
     const { id } = this.props.params;
-    this.props.fetchProduct(id);
+    this.props.fetchHardware(id);
   }
 
   handleChange(event, newValue) {
-    event.persist();          
-    this.setState((state) => state.product[event.target.name] = newValue);
-    this.props.product[event.target.name] = newValue;
+    event.persist();
+    this.setState((state) => state.thisHardware[event.target.name] = newValue);
   }
 
   onSubmit() {
-    this.props.editProduct(this.state.product, () => {
-      // this.props.router.goBack();
-      this.props.history.push('/products');
+    const { brandName, description, developmentName: devName, id, revision, serialPart } = this.state.thisHardware;
+
+    this.props.editHardware({ brandName, description, devName, id, revision, serialPart }, () => {
+      this.props.router.goBack();
     });
   }
 
   render (){
-    // const { handleSubmit } = this.props;
-    let { product } = this.props;
-    
-    if (!product) {
-      product = initialState.product;
+    let { thisHardware } = this.props;
+
+    if (!thisHardware) {
+      thisHardware = initialState.thisHardware;
     }
 
     return (
-      <PageBase title="Edit Product"
-                navigation="Application / Edit Product">
-
-          <Link to="/newProduct" >
-            <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
-              <Clear />
-            </FloatingActionButton>
-          </Link>
+      <PageBase title="Edit hardware"
+                navigation="Application / Edit hardware">
 
           <ValidatorForm
             ref="form"
@@ -108,12 +103,10 @@ class EditProduct extends Component {
             }}
           >
 
-
-
           <TextValidator
             floatingLabelText="Brand Name"
             name="brandName"
-            value={product.brandName}
+            value={thisHardware.brandName}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['this field is required']}
@@ -122,16 +115,16 @@ class EditProduct extends Component {
           <TextValidator
             floatingLabelText="Development Name"
             name="devName"
-            value={product.developmentName}
+            value={thisHardware.developmentName}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['this field is required']}
             fullWidth={false}
           />
           <TextValidator
-            floatingLabelText="Hardware Revision"
-            name="hardwareRevision"
-            value={product.hardwareRevision}
+            floatingLabelText="Revision"
+            name="revision"
+            value={thisHardware.revision}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['this field is required']}
@@ -140,7 +133,7 @@ class EditProduct extends Component {
           <TextValidator
             floatingLabelText="Description"
             name="description"
-            value={product.description}
+            value={thisHardware.description}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['this field is required']}
@@ -149,7 +142,7 @@ class EditProduct extends Component {
           <TextValidator
             floatingLabelText="Serial Part"
             name="serialPart"
-            value={product.serialPart}
+            value={thisHardware.serialPart}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['this field is required']}
@@ -157,7 +150,7 @@ class EditProduct extends Component {
           />
 
           <div style={styles.buttons}>
-            <Link to="/products">
+            <Link to="/hardwares">
               <RaisedButton label="Back"/>
             </Link>
 
@@ -172,12 +165,12 @@ class EditProduct extends Component {
   }
 }
 
-function mapStateToProps({ products }, ownProps) {
-  return { product: products[ownProps.params.id] };
+function mapStateToProps({ hardware }, ownProps) {
+  return { thisHardware: hardware[ownProps.params.id] };
 }
 
 export default reduxForm({
-  form: 'EditProduct'
+  form: 'EditHardware'
 })(
-  connect(mapStateToProps, { editProduct, fetchProduct })(EditProduct)
+  connect(mapStateToProps, { editHardware, fetchHardware })(EditHardware)
 );

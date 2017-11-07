@@ -1,17 +1,17 @@
-// import the const we define in our actions
-import { FETCH_ALL_SOFTWARE, FETCH_SOFTWARE, EDIT_SOFTWARE } from '../actions';
+import { EDIT_SOFTWARE, FETCH_ALL_SOFTWARE, FETCH_SOFTWARE } from '../actions';
 import { mapKeys } from 'lodash';
 
 export default function(state = {}, action) {
- switch (action.type) {
+  switch (action.type) {
     case FETCH_ALL_SOFTWARE:
-      if (action.payload.data){
+      if (action.payload.data) {
         const software = action.payload.data.map(item => {
           return item;
         });
-          return mapKeys(software, 'id');
+
+        return mapKeys(software, 'id');
       } else {
-        return { ...state }
+        return { ...state };
       }
 
     case FETCH_SOFTWARE:

@@ -9,7 +9,7 @@ import PageBase from '../components/PageBase';
 
 import { map } from 'lodash';
 import { connect } from 'react-redux';
-import { fetchProducts } from '../actions';
+import { fetchAllHardware } from '../actions';
 
 const styles = {
   floatingActionButton: {
@@ -45,7 +45,7 @@ const styles = {
   }
 };
 
-class ListProducts extends Component {
+class ListHardware extends Component {
 
   constructor(props) {
     super (props);
@@ -53,10 +53,11 @@ class ListProducts extends Component {
     this.state = {
       selected: [1]
     };
+    this.handleRowSelection = this.handleRowSelection.bind(this);
   }
 
   componentWillMount(){
-    this.props.fetchProducts();
+    this.props.fetchAllHardware();
   }
 
   handleRowSelection(selectedRows) {
@@ -81,7 +82,7 @@ class ListProducts extends Component {
       <PageBase title="Hardware Page"
                 navigation="Application / Hardware Page">
         <div>
-          <Link to="/newProduct" >
+          <Link to="/newHardware" >
             <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
               <ContentAdd />
             </FloatingActionButton>
@@ -99,7 +100,7 @@ class ListProducts extends Component {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {map(this.props.products ,item =>
+              {map(this.props.hardware ,item =>
                 <TableRow selected={this.isSelected(item.id)} key={item.id}>
                   <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
                   <TableRowColumn style={styles.columns.name}>{item.developmentName}</TableRowColumn>
@@ -107,7 +108,7 @@ class ListProducts extends Component {
                   <TableRowColumn style={styles.columns.revision}>{item.revision}</TableRowColumn>
                   <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
                   <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to={`/editProduct/${item.id}`}>
+                    <Link className="button" to={`/editHardware/${item.id}`}>
                       <FloatingActionButton zDepth={0}
                                             mini={true}
                                             backgroundColor={grey200}
@@ -126,8 +127,8 @@ class ListProducts extends Component {
   }
 }
 
-function mapStateToProps({ products }) {
-  return { products };
+function mapStateToProps({ hardware }) {
+  return { hardware };
 }
 
-export default connect(mapStateToProps, { fetchProducts })(ListProducts);
+export default connect(mapStateToProps, { fetchAllHardware })(ListHardware);

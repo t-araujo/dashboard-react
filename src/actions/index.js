@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const FETCH_PRODUCTS = 'fetch_products';
-export const FETCH_PRODUCT = 'fetch_product';
-export const CREATE_PRODUCT = 'create_product';
-export const EDIT_PRODUCT = 'edit_product';
+export const FETCH_ALL_HARDWARE = 'fetch_all_hardware';
+export const FETCH_HARDWARE = 'fetch_hardware';
+export const CREATE_HARDWARE = 'create_hardware';
+export const EDIT_HARDWARE = 'edit_hardware';
 export const FETCH_BATCHES = 'fetch_batches';
 export const FETCH_BATCH = 'fetch_batche';
 export const CREATE_BATCH = 'create_batch';
@@ -19,8 +19,7 @@ export const EDIT_DEVICE = 'edit_device';
 export const FETCH_DEVICE = 'fetch_device';
 export const FETCH_DEVICES = 'fetch_devices';
 
-// const ROOT_URL = `http://localhost:4000`;
-const ROOT_URL = `http://192.168.3.89:4000`;
+const ROOT_URL = `http://api.testing.displax.com:4000`;
 
 /**
  * 
@@ -28,41 +27,41 @@ const ROOT_URL = `http://192.168.3.89:4000`;
  * 
  */
 
-export function fetchProducts() {
-  const request = axios.get(`${ROOT_URL}/hardwares`);
+export function fetchAllHardware() {
+  const request = axios.get(`${ROOT_URL}/hardware`);
 
   return {
-    type: FETCH_PRODUCTS,
+    type: FETCH_ALL_HARDWARE,
     payload: request
   };
 }
 
-export function createProduct(values, callback) {
-  const request = axios.post(`${ROOT_URL}/hardwares`, values)
+export function createHardware(values, callback) {
+  const request = axios.post(`${ROOT_URL}/hardware`, values)
     .then(() => callback());
 
   return dispatch => {
     request.then(data => {
-      dispatch({ type: CREATE_PRODUCT, payload: data });
+      dispatch({ type: CREATE_HARDWARE, payload: data });
     });
-  }
+  };
 }
 
-export function editProduct(values, callback) {
-  const request = axios.patch(`${ROOT_URL}/hardwares/${values.id}`, values)
+export function editHardware(values, callback) {
+  const request = axios.patch(`${ROOT_URL}/hardware/${values.id}`, values)
     .then(() => callback());
 
   return {
-    type: EDIT_PRODUCT,
+    type: EDIT_HARDWARE,
     payload: request
   };
 }
 
-export function fetchProduct(id) {
-  const request = axios.get(`${ROOT_URL}/hardwares/${id}`);
+export function fetchHardware(id) {
+  const request = axios.get(`${ROOT_URL}/hardware/${id}`);
 
   return {
-    type: FETCH_PRODUCT,
+    type: FETCH_HARDWARE,
     payload: request
   };
 }
@@ -107,7 +106,7 @@ export function createBatch(values, callback) {
     request.then(data => {
       dispatch({ type: CREATE_BATCH, payload: data });
     });
-  }
+  };
 }
 
 export function editBatch(values, callback) {
@@ -130,13 +129,13 @@ export function fetchBatch(id) {
 }
 
 /**
- * 
+ *
  * Firmwares
- * 
+ *
  */
 
-export function fetchFirmwares(id) {
-  const request = axios.get(`${ROOT_URL}/firmwares`);
+export function fetchFirmwares() {
+  const request = axios.get(`${ROOT_URL}/firmware`);
 
   return {
     type: FETCH_FIRMWARES,
@@ -145,31 +144,31 @@ export function fetchFirmwares(id) {
 }
 
 export function editFirmware(values, callback) {
-  const request = axios.patch(`${ROOT_URL}/firmwares/${values.id}`, values)
+  const request = axios.patch(`${ROOT_URL}/firmware/${values.id}`, values)
     .then(() => callback());
 
   return {
-    type: EDIT_BATCH,
+    type: EDIT_FIRMWARE,
     payload: request
   };
 }
 
 export function fetchFirmware(id) {
-  const request = axios.get(`${ROOT_URL}/firmwares/${id}`);
+  const request = axios.get(`${ROOT_URL}/firmware/${id}`);
 
   return {
-    type: FETCH_BATCH,
+    type: FETCH_FIRMWARE,
     payload: request
   };
 }
 
 /**
- * 
+ *
  * Software
- * 
+ *
  */
 
-export function fetchAllSoftware(id) {
+export function fetchAllSoftware() {
   const request = axios.get(`${ROOT_URL}/software`);
 
   return {
@@ -197,7 +196,13 @@ export function fetchSoftware(id) {
   };
 }
 
-export function fetchDevices(id) {
+/**
+ *
+ * Device
+ *
+ */
+
+export function fetchDevices() {
   const request = axios.get(`${ROOT_URL}/devices`);
 
   return {

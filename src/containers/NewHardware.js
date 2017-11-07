@@ -7,7 +7,7 @@ import Divider from 'material-ui/Divider';
 import PageBase from '../components/PageBase';
 
 import { connect } from 'react-redux';
-import { createProduct } from '../actions/index';
+import { createHardware } from '../actions/index';
 import { reduxForm } from 'redux-form';
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
@@ -30,10 +30,10 @@ const styles = {
   }
 };
 
-class NewProduct extends Component {
+class NewHardware extends Component {
   state = {
     error: null, // you could put error messages here if you wanted
-    product: {
+    hardware: {
         devName: "",
         brandName: "",
         serialPart: "",
@@ -51,11 +51,11 @@ class NewProduct extends Component {
 
   handleChange = (event, newValue) => {
     event.persist();          
-    this.setState((state) => state.product[event.target.name] = newValue);
+    this.setState((state) => state.hardware[event.target.name] = newValue);
   }
 
   onSubmit = () => {
-    this.props.createProduct(this.state.product, () => {
+    this.props.createHardware(this.state.hardware, () => {
       this.props.router.goBack();
     });
   }
@@ -63,8 +63,8 @@ class NewProduct extends Component {
   render (){
     // const { handleSubmit } = this.props;
     return (
-      <PageBase title="New Product"
-                navigation="Application / New Product">
+      <PageBase title="New Hardware"
+                navigation="Application / New Hardware">
           <ValidatorForm
             ref="form"
             onSubmit={this.onSubmit}
@@ -76,7 +76,7 @@ class NewProduct extends Component {
           <TextValidator
             floatingLabelText="Brand Name"
             name="brandName"
-            value={this.state.product.brandName}
+            value={this.state.hardware.brandName}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Brand Name field is required']}
@@ -85,7 +85,7 @@ class NewProduct extends Component {
           <TextValidator
             floatingLabelText="Development Name"
             name="devName"
-            value={this.state.product.devName}
+            value={this.state.hardware.devName}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Development Name field is required']}
@@ -94,7 +94,7 @@ class NewProduct extends Component {
           <TextValidator
             floatingLabelText="Hardware Revision"
             name="revision"
-            value={this.state.product.revision}
+            value={this.state.hardware.revision}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Hardware Revision field is required']}
@@ -103,7 +103,7 @@ class NewProduct extends Component {
           <TextValidator
             floatingLabelText="Description"
             name="description"
-            value={this.state.product.description}
+            value={this.state.hardware.description}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Description field is required']}
@@ -112,7 +112,7 @@ class NewProduct extends Component {
           <TextValidator
             floatingLabelText="Serial Part"
             name="serialPart"
-            value={this.state.product.serialPart}
+            value={this.state.hardware.serialPart}
             onChange={this.handleChange}
             validators={['required']}
             errorMessages={['Serial Part field is required']}
@@ -128,7 +128,7 @@ class NewProduct extends Component {
           <Divider/>
 
           <div style={styles.buttons}>
-            <Link to="products">
+            <Link to="hardwares">
               <RaisedButton label="Back"/>
             </Link>
 
@@ -143,13 +143,13 @@ class NewProduct extends Component {
   }
 }
 
-NewProduct.propTypes = {
-  createProduct: PropTypes.func,
+NewHardware.propTypes = {
+  createHardware: PropTypes.func,
   router: PropTypes.object
 };
 
 export default reduxForm({
-  form: 'NewProduct'
+  form: 'NewHardware'
 })(
-  connect(null, { createProduct })(NewProduct)
+  connect(null, { createHardware })(NewHardware)
 );
