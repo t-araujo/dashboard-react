@@ -6,57 +6,59 @@ import ContentCreate from 'material-ui/svg-icons/content/create';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import {pink500, grey200, grey500} from 'material-ui/styles/colors';
 import PageBase from '../components/PageBase';
+import DataTables from 'material-ui-datatables';
 
-import { map } from 'lodash';
+import { isEmpty, orderBy, slice } from 'lodash';
 import { connect } from 'react-redux';
 import { fetchAllHardware } from '../actions';
 
-const styles = {
-  floatingActionButton: {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 20,
-    left: 'auto',
-    position: 'fixed',
+const TABLE_COLUMNS = [
+  {
+    key: 'product',
+    label: 'Product ID',
+    sortable: true
   },
-  editButton: {
-    fill: grey500
+  {
+    key: 'brand',
+    label: 'Product Brand name',
+    sortable: true
   },
-  columns: {
-    id: {
-      width: '10%'
-    },
-    name: {
-      width: '20%'
-    },
-    brandName: {
-      width: '20%'
-    },
-    revision: {
-      width: '20%'
-    },
-    description: {
-      width: '20%'
-    },
-    edit: {
-      width: '10%'
-    }
+  {
+    key: 'codename',
+    label: 'Code name',
+    sortable: true
+  },
+  {
+    key: 'revision',
+    label: 'Product revision',
+    sortable: true
   }
+];
+
+const initialState = {
+  hardware: [],
+  page: 1,
+  selected: [1]
 };
 
 class ListHardware extends Component {
 
   constructor(props) {
-    super (props);
-    
-    this.state = {
-      selected: [1]
-    };
+    super(props);
+
+    this.state = initialState;
+    // this.state.hardware = this.props.hardware;
+    console.log(this.props.hardware)
+    this.state.hardware = isEmpty(this.props.hardware) ? [] : this.props.hardware;
+
     this.handleRowSelection = this.handleRowSelection.bind(this);
+    this.handleSortOrderChange = this.handleSortOrderChange.bind(this);
+    this.handleNextPageClick = this.handleNextPageClick.bind(this);
+    this.handleRowSizeChange = this.handleRowSizeChange.bind(this);
+    this.handlePreviousPageClick = this.handlePreviousPageClick.bind(this);
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.fetchAllHardware();
   }
 
@@ -70,65 +72,79 @@ class ListHardware extends Component {
     return this.state.selected.indexOf(index) !== -1;
   }
 
-  // componentDidMount() {
-  //   setInterval(() => this.props.fetchProducts(), 1000);
-  // }
-  // componentWillUnmount() {
-  //   clearInterval(setInterval());
-  // }
+  handleFilterValueChange = (value) => {
+    // your filter logic
+  }
 
-  render (){
+  handleNextPageClick = event => {
+    console.log('====================================');
+    console.log(this.state.page);
+    console.log('====================================');
+    this.setState({
+      page: this.state.page + 1
+    });
+    // this.setState({
+    //   hardware: slice(this.props.hardware, value)
+    // });
+  }
+
+  handlePreviousPageClick = value => {
+    console.log('====================================');
+    console.log(this.state.page, value);
+    console.log('====================================');
+    this.setState({
+      page: this.state.page - 1
+    });
+  }
+
+  handleSortOrderChange = (key, order) => {
+    this.setState({
+      hardware: orderBy(this.props.hardware, key, order)
+    });
+  }
+  handleRowSizeChange = value => {
+    
+  }
+  render() {
     return (
-      <PageBase title="Hardware Page"
-                navigation="Application / Hardware Page">
-        <div>
-          <Link to="/newHardware" >
-            <FloatingActionButton style={styles.floatingActionButton} backgroundColor={pink500}>
-              <ContentAdd />
-            </FloatingActionButton>
-          </Link>
-
-          <Table multiSelectable={true} onRowSelection={this.handleRowSelection}>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderColumn style={styles.columns.id}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.name}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.brandName}>Brand Name</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.revision}>revision</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.description}>Description</TableHeaderColumn>
-                <TableHeaderColumn style={styles.columns.edit}>Edit</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {map(this.props.hardware ,item =>
-                <TableRow selected={this.isSelected(item.id)} key={item.id}>
-                  <TableRowColumn style={styles.columns.id}>{item.id}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.name}>{item.developmentName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.brandName}>{item.brandName}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.revision}>{item.revision}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.description}>{item.description}</TableRowColumn>
-                  <TableRowColumn style={styles.columns.edit}>
-                    <Link className="button" to={`/editHardware/${item.id}`}>
-                      <FloatingActionButton zDepth={0}
-                                            mini={true}
-                                            backgroundColor={grey200}
-                                            iconStyle={styles.editButton}>
-                        <ContentCreate  />
-                      </FloatingActionButton>
-                    </Link>
-                  </TableRowColumn>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>    
-        </div>
-      </PageBase>
+      <DataTables
+        title='Hardware List'
+        height={'auto'}
+        headerToolbarMode={'filter'}
+        selectable={true}
+        showRowHover={true}
+        columns={TABLE_COLUMNS}
+        data={this.state.hardware}
+        showCheckboxes={false}
+        onCellClick={this.handleCellClick}
+        onNextPageClick={this.handleNextPageClick}
+        onPreviousPageClick={this.handlePreviousPageClick}
+        onCellDoubleClick={this.handleCellDoubleClick}
+        onFilterValueChange={this.handleFilterValueChange}
+        onSortOrderChange={this.handleSortOrderChange}
+        onRowSizeChange={this.handleRowSizeChange}
+        page={this.state.page}
+        rowSize={10}
+        showCheckboxes={true}
+        showHeaderToolbar={true}
+        showRowHover={true}
+        showRowSizeControls={true}
+        count={this.state.hardware.length}
+      />
     );
   }
 }
 
 function mapStateToProps({ hardware }) {
-  return { hardware };
+  let temp;
+
+  if (hardware === {}) {
+    temp = { hardware: [] };
+  } else {
+    temp = { hardware };
+  }
+
+  return temp;
 }
 
 export default connect(mapStateToProps, { fetchAllHardware })(ListHardware);

@@ -6,7 +6,10 @@ import { mapKeys } from 'lodash';
 export default function(state = {}, action) {
   switch (action.type) {
     case FETCH_ALL_HARDWARE:
-      return mapKeys(action.payload.data, 'id');
+    // return mapKeys(action.payload.data.data.allHardwares.edges, 'node.id');
+      // return mapKeys(action.payload.data, 'id');
+
+      return action.payload.data;
     case CREATE_HARDWARE:
       // Key interpolation
       return { ...state };

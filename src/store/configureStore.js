@@ -1,12 +1,11 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../reducers/index';
-
 import promise from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
 
 const middlewares = [
   promise,
-  ReduxThunk,
+  ReduxThunk
 ];
 
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);

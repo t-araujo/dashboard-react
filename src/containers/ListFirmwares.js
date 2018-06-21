@@ -13,16 +13,16 @@ import { connect } from 'react-redux';
 import { fetchFirmwares } from '../actions';
 
 const styles = {
-  floatingActionButton: {
-    margin: 0,
-    top: 'auto',
-    right: 20,
-    bottom: 20,
-    left: 'auto',
-    position: 'fixed'
-  },
   editButton: {
     fill: grey500
+  },
+  floatingActionButton: {
+    bottom: 20,
+    left: 'auto',
+    margin: 0,
+    position: 'fixed',
+    right: 20,
+    top: 'auto'
   },
   columns: {
     created: {

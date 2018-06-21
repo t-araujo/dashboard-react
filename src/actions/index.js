@@ -1,4 +1,5 @@
 import axios from 'axios';
+import fetch from 'isomorphic-fetch';
 
 export const FETCH_ALL_HARDWARE = 'fetch_all_hardware';
 export const FETCH_HARDWARE = 'fetch_hardware';
@@ -19,20 +20,23 @@ export const EDIT_DEVICE = 'edit_device';
 export const FETCH_DEVICE = 'fetch_device';
 export const FETCH_DEVICES = 'fetch_devices';
 
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.Accept = 'application/json';
+
 const ROOT_URL = `http://api.testing.displax.com:4000`;
+const ROOT_URL2 = `http://api.testing.displax.com:5000`;
 
 /**
- * 
  * Products
- * 
  */
 
 export function fetchAllHardware() {
   const request = axios.get(`${ROOT_URL}/hardware`);
+  // const request = axios.post(`${ROOT_URL2}/graphql`, JSON.stringify({ query: '{ allHardwares(first: 20 ) { edges { node { id, brand, codename, description, product, revision} }}}' }));
 
   return {
-    type: FETCH_ALL_HARDWARE,
-    payload: request
+    payload: request,
+    type: FETCH_ALL_HARDWARE
   };
 }
 

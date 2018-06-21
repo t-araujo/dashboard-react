@@ -14,14 +14,14 @@ import 'flexboxgrid/css/flexboxgrid.css';
 injectTapEventPlugin();
 
 ReactDOM.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <Switch>
-                <Router history={browserHistory} >
-                    {routes}
-                </Router>
-            </Switch>
-        </BrowserRouter>
-    </Provider>
-    , document.getElementById('app')
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Router history={browserHistory} >
+          {routes}
+        </Router>
+      </Switch>
+    </BrowserRouter>
+  </Provider>
+  , document.getElementById('app')
 );
